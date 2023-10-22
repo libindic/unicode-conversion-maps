@@ -1,22 +1,4 @@
-/*
-Freaknz-qt: A QT application to convert Malayalam ASCII to Unicode format.
-Copyright (C) Kannan V M 2019
-
-This program is free software: you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation, either version 3 of the License, or
-(at your option) any later version.
-
-This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
-
-You should have received a copy of the GNU General Public License
-along with this program.  If not, see <https://www.gnu.org/licenses/>.
-*/
-
-#Givetherulesinfollowingformat
+# Contributors: nishan, Mujeeb, Kannan VM
 w=ം
 x=ഃ
 A=അ
@@ -26,6 +8,7 @@ Cu=ഈ
 D=ഉ
 Du=ഊ
 E=ഋ
+\p=ഌ
 F=എ
 G=ഏ
 sF=ഐ
@@ -80,7 +63,7 @@ ss=ൈ
 sm=ൊ
 tm=ോ
 su=ൌ
-v=്‌
+v=്
 u=ൗ
 ¡=ക്ക
 ¡=ക്ക
@@ -96,6 +79,7 @@ u=ൗ
 «=ട്ട
 ¬=ണ്‍
 ­=ണ്ട
+ï=ണ്ട
 ®=ണ്ണ
 ¯=ത്ത
 °=ത്ഥ
@@ -153,18 +137,16 @@ u=ൗ
 y=്യ
 z=്വ
 {=്ര
-##--fromhereaddedbynishan##
 ´=ന്ത
 ¸=പ്പ
 ¨=ച്ച
 ¦=ങ്ക
 ¼=മ്പ
 ½=മ്മ
+¾=മ്ല
 ¤=ഗ്ഗ
 þ=-
 ∂=ന്ന
--= 
-##--found in Ml-tt karthika conjecnctions - Mujeeb##
 æ=കു
 ê=രു
 ç=ക്കു
