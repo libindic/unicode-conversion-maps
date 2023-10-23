@@ -4,6 +4,7 @@ const path = require('path');
 const scriptDir = __dirname;
 const mapsFolder = path.join(scriptDir, '..', "maps");
 const buildFolder = path.join(scriptDir, '..', "build");
+const buildRawFolder = path.join(buildFolder, "raw");
 const atlas = {}
 const files = fs.readdirSync(mapsFolder)
 files.forEach((file) => {
@@ -19,6 +20,6 @@ files.forEach((file) => {
     })
     atlas[fontName] = fontMap;
 });
-const jsBuildPath = path.join(buildFolder, 'unicode-conversion-maps.mjs');
-fs.mkdirSync(buildFolder, { recursive: true })
+const jsBuildPath = path.join(buildRawFolder, 'unicode-conversion-maps.mjs');
+fs.mkdirSync(buildRawFolder, { recursive: true })
 fs.writeFileSync(jsBuildPath, `export default ${JSON.stringify(atlas, null, 0)};`)

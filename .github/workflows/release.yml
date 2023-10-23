@@ -18,6 +18,6 @@ jobs:
           node scripts/build.js
       - uses: ncipollo/release-action@v1
         with:
-          artifacts: "build/*"
+          artifacts: "build/raw/*"
           tag: v1.0.${{ github.run_id }}
-          
+      
