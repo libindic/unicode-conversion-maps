@@ -54,3 +54,19 @@ fs.writeFileSync(npmPackageJson, `{
 `)
 
 fs.copyFileSync(jsBuildPath, path.join(npmFolder, "unicode-conversion-maps.mjs"))
+
+const pythonFolder = path.join(buildFolder, "pypi");
+const pythonFilePath = path.join(pythonFolder, "libindic", "unicode_conversion_maps", "__init__.py")
+mkdir(path.dirname(pythonFilePath));
+
+fs.writeFileSync(pythonFilePath, `# This Python file uses the following encoding: utf-8
+maps = ${JSON.stringify(atlas, null, 0)}`);
+
+fs.writeFileSync(path.join(pythonFolder, 'pyproject.toml'), `[build-system]
+requires = ["setuptools"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "libindic-unicode-conversion-maps"
+version = "1.0.${version}"
+`)

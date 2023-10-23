@@ -8,16 +8,21 @@ on:
 jobs:
   releaser:
     runs-on: ubuntu-latest
+    environment: release
     permissions:
       contents: write
+      id-token: write
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v3
         with:
           registry-url: 'https://registry.npmjs.org'
+      - uses: actions/setup-python@v4
       - name: Build
         run: |
           node scripts/build.js ${{ github.run_id }}
+          cd build/pypi
+          python -m build
       - uses: ncipollo/release-action@v1
         with:
           artifacts: "build/raw/*"
@@ -27,4 +32,7 @@ jobs:
         run: npm publish --access public
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
-      
+      - name: Publish package to PyPI
+        uses: pypa/gh-action-pypi-publish@release/v1
+        with:
+          packages-dir: build/pypi/dist
