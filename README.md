@@ -42,7 +42,7 @@ If you want to directly use these maps, you can paste them in [chekkans-web](htt
 
 You can find and download library artifacts in [releases](https://github.com/libindic/unicode-conversion-maps/releases)
 
-For javascript, you can do 
+#### Javascript
 
 `npm install @indicjs/unicode-conversion-maps`
 
@@ -59,6 +59,15 @@ If you're in an HTML page you can do
     import maps from "https://unpkg.com/@indicjs/unicode-conversion-maps";
     console.log(maps["revathi"]["A"]);
 </script>
+```
+
+#### Python
+
+`pip install libindic-unicode-conversion-maps`
+
+```python
+from libindic.unicode_conversion_maps import maps
+print(maps['revathi']['A']) # prints അ
 ```
 
 ## History
