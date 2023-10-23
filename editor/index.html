@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<title>ASCII Unicode Conversion Maps Creator</title>
+	<script type="importmap">
+		{
+		  "imports": {
+			"vue": "http://unpkg.com/vue@3/dist/vue.esm-browser.js",
+			"opentype": "http://unpkg.com/opentype.js/dist/opentype.module.js"
+		  }
+		}
+	  </script>
+	<style>
+		header {
+			display: flex;
+			flex-direction: row;
+			flex-wrap: wrap;
+			padding: 4em;
+		}
+
+		#glyfs {
+			display: flex;
+			flex-direction: row;
+			flex-wrap: wrap;
+			gap: 1em;
+		}
+
+		.glyf {
+			border: 1px solid black;
+			min-width: 40px;
+		}
+
+		canvas {
+			width: 8em;
+			height: 4em;
+		}
+
+		.glyfHeader {
+			background-color: blue;
+			color: white;
+		}
+
+		.glyfContent {
+			display: flex;
+			flex-direction: row;
+		}
+
+		.glyfContentRight {
+			display: flex;
+			flex-direction: column;
+		}
+
+		.serial {
+			background-color: lightgreen;
+			color: black;
+		}
+
+		.mapinput {
+			height: 1em;
+			font-size: 50px;
+		}
+	</style>
+</head>
+
+<body>
+	<div id="app">
+		<h1>ASCII Unicode Conversion Map Editor</h1>
+		<header>
+			<div>
+				<label for="read">Choose Font</label>
+				<input type="file" @change="onChangeFont" id="read" />
+			</div>
+			<div>
+				<label for="read">Choose Map</label><input type="file" @change="onChangeMap" id="map" />
+			</div>
+			<div>
+				<textarea id="mapcontents" v-model="mapValue"></textarea>
+				<button @click="copyMap">Copy Map</button>
+			</div>
+		</header>
+		<div id="glyfs">
+			<div class="glyf" v-for="(char, index) in asciiChars" :key="char">
+				<div class="glyfHeader"><span class="serial">{{ ASCII_START + index }}</span> {{ char }}</div>
+				<div class="glyfContent">
+					<canvas :ref="(el) => storeGlyfCanvas(char, el)"></canvas>
+					<div class="glyfContentRight">
+						<input v-model="mappings[char]" size="1" class="mapinput"
+							@change="e => changeMapping(char, e.target.value)" />
+						<span>{{ getCharCode(mappings[char]) }}</span>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<script type="module">
+		import { createApp, reactive, ref } from 'vue'
+		import { parse } from 'opentype'
+		const ASCII_START = 33;
+		const ASCII_END = 256;
+		createApp({
+			setup() {
+				const asciiChars = [];
+				for (let i = ASCII_START; i < ASCII_END; i++) {
+					asciiChars.push(String.fromCharCode(i));
+				}
+				const glyfCanvases = reactive({})
+				const storeGlyfCanvas = (char, el) => glyfCanvases[char] = el;
+				const mapValue = ref("");
+				const mappings = reactive({});
+				return {
+					asciiChars,
+					glyfCanvases,
+					storeGlyfCanvas,
+					ASCII_START,
+					mapValue,
+					mappings,
+				}
+			},
+			methods: {
+				async copyMap() {
+					try {
+						await navigator.clipboard.writeText(this.mapValue);
+						alert('Copied map to clipboard. Consider contributing to community at https://github.com/libindic/unicode-conversion-maps');
+					} catch ($e) {
+						alert('Cannot copy. Manually copy from text area ');
+					}
+				},
+				changeMapping(char, value) {
+					this.mapValue = this.mapValue
+						.split('\n')
+						.map(line => {
+							if (line.startsWith('#')) return line;
+							let [lhs, rhs] = line.split('=').map(w => w.trim())
+							if (lhs === char) {
+								return `${lhs}=${value}`
+							} else {
+								return line
+							}
+						})
+						.join('\n')
+				},
+				getCharCode(text) {
+					if (!text) return "";
+					return text.split('')
+						.map(k =>
+							`U${k
+								.charCodeAt(0)
+								.toString(16)
+								.toUpperCase()
+								.padStart(4, '0')
+							}`)
+						.join('+')
+				},
+				readMapFile(text) {
+					const lines = text.split('\n');
+					lines.forEach(line => {
+						if (line.startsWith('#')) return;
+						let [lhs, rhs] = line.split('=').map(w => w.trim())
+						this.mappings[lhs] = rhs;
+					})
+				},
+				onChangeMap(e) {
+					const file = e.target.files[0];
+					const reader = new FileReader();
+					reader.onload = (e) => {
+						this.mapValue = e.target.result;
+						this.readMapFile(e.target.result);
+					}
+					reader.onerror = (e) => {
+						console.log("err", e);
+					};
+					reader.readAsText(file);
+				},
+				renderGlyph(char, glyph) {
+					const canvas = this.glyfCanvases[char]
+					glyph.draw(canvas.getContext("2d"), 50, 75, 100);
+				},
+				onChangeFont(e) {
+					const file = e.target.files[0];
+					const reader = new FileReader();
+					reader.onload = (e) => {
+						const font = parse(e.target.result);
+						const scale = 1000 / font.unitsPerEm;
+						const glyphDict = {}
+						Object.entries(font.glyphs.glyphs).forEach(([index, glyph]) => {
+							glyphDict[glyph.unicode] = glyph;
+						});
+						console.log(this.asciiChars);
+						for (let i = ASCII_START; i < ASCII_END; i++) {
+
+							const char = this.asciiChars[i - ASCII_START];
+							if (i in glyphDict) {
+								this.renderGlyph(char, glyphDict[i])
+							}
+						}
+					};
+					reader.onerror = (e) => {
+						console.log("err", e);
+					};
+					reader.readAsArrayBuffer(file);
+				},
+			},
+		}).mount('#app')
+	</script>
+
+</body>
+
+</html>
