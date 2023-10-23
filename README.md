@@ -44,9 +44,21 @@ You can find and download library artifacts in [releases](https://github.com/lib
 
 For javascript, you can do 
 
+`npm install @indicjs/unicode-conversion-maps`
+
 ```javascript
-import maps from './unicode-conversion-maps.mjs'
-console.log(maps["revathi"]["A"]) // prints അ
+import maps from '@indicjs/unicode-conversion-maps';
+console.log(maps["revathi"]["A"]); // prints അ
+```
+
+
+If you're in an HTML page you can do
+
+```html
+<script type="module">
+    import maps from "https://unpkg.com/@indicjs/unicode-conversion-maps";
+    console.log(maps["revathi"]["A"]);
+</script>
 ```
 
 ## History
