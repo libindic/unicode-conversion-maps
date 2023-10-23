@@ -22,6 +22,7 @@ jobs:
         run: |
           node scripts/build.js ${{ github.run_id }}
           cd build/pypi
+          python -m pip install build --user
           python -m build
       - uses: ncipollo/release-action@v1
         with:
