@@ -13,11 +13,18 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v3
+        with:
+          registry-url: 'https://registry.npmjs.org'
       - name: Build
         run: |
-          node scripts/build.js
+          node scripts/build.js ${{ github.run_id }}
       - uses: ncipollo/release-action@v1
         with:
           artifacts: "build/raw/*"
           tag: v1.0.${{ github.run_id }}
+      - name: npm publish
+        working-directory: build/npm
+        run: npm publish --access public
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
       
