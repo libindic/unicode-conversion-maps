@@ -69,4 +69,21 @@ build-backend = "setuptools.build_meta"
 [project]
 name = "libindic-unicode-conversion-maps"
 version = "1.0.${version}"
+description = "Maps for converting ASCII to Unicode"
+readme = "README.md"
+
+[project.urls]
+Homepage = "https://github.com/libindic/unicode-conversion-maps"
+`)
+
+fs.writeFileSync(path.join(pythonFolder, 'README.md'), `# libindic-unicode-conversion-maps
+
+To use, first install \`pip install libindic-unicode-conversion-maps\`
+
+Then import and use:
+
+\`\`\`python
+from libindic.unicode_conversion_maps import maps
+print(maps["revathi"]["A"]) # prints അ
+\`\`\`
 `)
