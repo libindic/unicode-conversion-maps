@@ -38,6 +38,17 @@ You can contribute the map to the community by either editing an existing map or
 
 If you want to directly use these maps, you can paste them in [chekkans-web](http://asdofindia.github.io/chekkans-web/) at the bottom and use it directly.
 
+### Using map library
+
+You can find and download library artifacts in [releases](https://github.com/libindic/unicode-conversion-maps/releases)
+
+For javascript, you can do 
+
+```javascript
+import maps from './unicode-conversion-maps.mjs'
+console.log(maps["revathi"]["A"]) // prints അ
+```
+
 ## History
 
 * [Payyans](https://github.com/libindic/payyans) is the origin of a lot of map files.

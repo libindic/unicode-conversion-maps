@@ -1,0 +1,23 @@
+name: Release everything!
+on:
+  push:
+    branches:
+      - main
+    # paths:
+    #   - maps
+jobs:
+  releaser:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v3
+      - name: Build
+        run: |
+          node scripts/build.js
+      - uses: ncipollo/release-action@v1
+        with:
+          artifacts: "build/*"
+          tag: v1.0.${{ github.run_id }}
+          
