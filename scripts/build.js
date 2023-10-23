@@ -50,6 +50,7 @@ fs.writeFileSync(npmPackageJson, `{
     "homepage": "https://github.com/libindic/unicode-conversion-maps",
     "main": "unicode-conversion-maps.mjs",
     "type": "module"
-}`)
+}
+`)
 
 fs.copyFileSync(jsBuildPath, path.join(npmFolder, "unicode-conversion-maps.mjs"))
