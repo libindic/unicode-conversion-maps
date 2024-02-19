@@ -1,5 +1,6 @@
 const fs = require('fs');
 const path = require('path');
+const { readMap } = require('./read-map');
 
 const version = process.argv[2];
 
@@ -11,22 +12,11 @@ const buildFolder = path.join(scriptDir, '..', "build");
 const buildRawFolder = path.join(buildFolder, "raw");
 const atlas = {}
 const files = fs.readdirSync(mapsFolder)
-const isRule = (line) => {
-    return line.length < 10 && line.indexOf('=') > -1
-}
-const isComment = (line) => !isRule(line)
 files.forEach((file) => {
     const filePath = path.join(mapsFolder, file);
-
-    const data = fs.readFileSync(filePath, 'utf8')
+    const fontMap = readMap(filePath);
     const fontName = path.parse(file).name;
-    const fontMap = {};
-    data.split('\n').forEach(l => {
-        l = l.trim();
-        if (isComment(l)) return;
-        const [lhs, rhs] = l.split('=').map(w => w.trim());
-        if (lhs) fontMap[lhs] = rhs;
-    })
+
     atlas[fontName] = fontMap;
 });
 const jsBuildPath = path.join(buildRawFolder, 'unicode-conversion-maps.mjs');
