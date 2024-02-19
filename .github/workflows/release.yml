@@ -1,10 +1,6 @@
 name: Release everything!
 on:
-  push:
-    branches:
-      - main
-    # paths:
-    #   - maps
+  workflow_dispatch
 jobs:
   releaser:
     runs-on: ubuntu-latest
