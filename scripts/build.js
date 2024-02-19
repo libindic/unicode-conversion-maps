@@ -11,6 +11,10 @@ const buildFolder = path.join(scriptDir, '..', "build");
 const buildRawFolder = path.join(buildFolder, "raw");
 const atlas = {}
 const files = fs.readdirSync(mapsFolder)
+const isRule = (line) => {
+    return line.length < 10 && line.indexOf('=') > -1
+}
+const isComment = (line) => !isRule(line)
 files.forEach((file) => {
     const filePath = path.join(mapsFolder, file);
 
@@ -18,7 +22,8 @@ files.forEach((file) => {
     const fontName = path.parse(file).name;
     const fontMap = {};
     data.split('\n').forEach(l => {
-        if (l.startsWith('#')) return;
+        l = l.trim();
+        if (isComment(l)) return;
         const [lhs, rhs] = l.split('=').map(w => w.trim());
         if (lhs) fontMap[lhs] = rhs;
     })
