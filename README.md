@@ -76,3 +76,28 @@ print(maps['revathi']['A']) # prints അ
 * [Freaknz](https://gitlab.com/kannanvm/freaknz-qt/) brought renewed interest in ASCII -> Unicode conversion
 * [ttf.js](https://github.com/ynakajima/ttf.js) is where the idea of showing glyphs in the browser came from.
 * [opentype.js](https://github.com/opentypejs/opentype.js) allowed for bug-free opening of glyphs.
+
+## Contributors
+
+Individual contributors to map, code, etc.
+
+* Zyxware
+* Vishnu Sanal T
+* Vasudev Kamath 
+* Swathanthra Malayalam Computing
+* Subin Siby
+* Santhosh Thottingal
+* Rajeesh K Nambiar
+* Praveen Arimbrathodiyil
+* Nithin Saji 
+* Nishan
+* Mujeeb CPY
+* Manoj Karingamadathil
+* Kannan V M
+* Jishnu Mohan
+* Jerin Philip
+* Jayanta Nath
+* Hrishikesh Bhaskaran
+* Harish Karumuthil 
+* Balasankar C
+* Akshay S Dinesh
