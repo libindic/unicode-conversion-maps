@@ -105,6 +105,11 @@
 		import { parse } from 'opentype'
 		const ASCII_START = 33;
 		const ASCII_END = 256;
+		const append = (data, line) => {
+			if (data === "") return line + '\n';
+			if (data.slice(-1) === '\n') return data + line + '\n';
+			return data + '\n' + line + '\n';
+		}
 		createApp({
 			setup() {
 				const asciiChars = [];
@@ -134,18 +139,23 @@
 					}
 				},
 				changeMapping(char, value) {
+					let modified = false;
 					this.mapValue = this.mapValue
 						.split('\n')
 						.map(line => {
 							if (line.startsWith('#')) return line;
 							let [lhs, rhs] = line.split('=').map(w => w.trim())
 							if (lhs === char) {
+								modified = true;
 								return `${lhs}=${value}`
 							} else {
 								return line
 							}
 						})
 						.join('\n')
+					if (!modified) {
+						this.mapValue = append(this.mapValue, `${char}=${value}`)
+					}
 				},
 				getCharCode(text) {
 					if (!text) return "";
